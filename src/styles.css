@@ -1,0 +1,63 @@
+/* Prefix: xeplr-ax-* (Actions). All rules easy to override. */
+
+.xeplr-ax-explorer { display: flex; flex-direction: column; gap: 8px; }
+.xeplr-ax-empty { color: #999; font-style: italic; padding: 8px 0; }
+
+.xeplr-ax-card {
+  border: 1px solid #e0e0e0; border-radius: 6px; background: #fff;
+}
+.xeplr-ax-card--selected { border-color: #646cff; box-shadow: 0 0 0 2px rgba(100,108,255,0.15); }
+.xeplr-ax-card-hd {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 12px; cursor: pointer; user-select: none;
+  font-family: system-ui, sans-serif;
+}
+.xeplr-ax-card-hd:hover { background: #f7f7f8; }
+.xeplr-ax-name { font-weight: 600; font-family: ui-monospace, Consolas, monospace; font-size: 13px; }
+.xeplr-ax-hint { color: #888; font-size: 12px; }
+.xeplr-ax-desc { padding: 0 12px 8px; color: #666; font-size: 12px; }
+.xeplr-ax-body { padding: 10px 12px 12px; border-top: 1px solid #eee; }
+
+.xeplr-ax-schema-title { font-size: 12px; font-weight: 600; color: #555; margin: 6px 0 4px; }
+.xeplr-ax-schema-empty { font-size: 12px; color: #999; margin: 4px 0; }
+.xeplr-ax-schema-tbl {
+  width: 100%; border-collapse: collapse; font-size: 12px; font-family: system-ui, sans-serif;
+}
+.xeplr-ax-schema-tbl th, .xeplr-ax-schema-tbl td {
+  border-bottom: 1px solid #f0f0f0; padding: 4px 6px; text-align: left; vertical-align: top;
+}
+.xeplr-ax-schema-tbl th { color: #666; font-weight: 600; }
+.xeplr-ax-schema-tbl code { background: #f4f4f6; padding: 1px 4px; border-radius: 3px; }
+
+/* Runner */
+.xeplr-ax-runner { display: flex; flex-direction: column; gap: 14px; font-family: system-ui, sans-serif; }
+.xeplr-ax-runner-lbl { font-size: 12px; font-weight: 600; color: #555; display: block; margin-bottom: 4px; }
+.xeplr-ax-runner-select {
+  padding: 6px 10px; border: 1px solid #ccc; border-radius: 4px; font: inherit; min-width: 240px;
+}
+.xeplr-ax-runner-desc { color: #666; font-size: 12px; }
+.xeplr-ax-runner-form { }
+.xeplr-ax-runner-actions { display: flex; gap: 8px; }
+.xeplr-ax-runner-actions button {
+  padding: 8px 14px; border: 1px solid #ccc; background: #fff; border-radius: 4px; cursor: pointer; font: inherit;
+}
+.xeplr-ax-primary { background: #646cff; color: #fff; border-color: #646cff; }
+.xeplr-ax-primary:hover:not(:disabled) { background: #535bf2; }
+.xeplr-ax-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.xeplr-ax-result {
+  padding: 10px 12px; border-radius: 6px; margin-top: 4px;
+  font-family: system-ui, sans-serif; font-size: 13px;
+}
+.xeplr-ax-result--success { background: #e8f5e8; border: 1px solid #b6dfb6; color: #2d7d2d; }
+.xeplr-ax-result--failed  { background: #ffecec; border: 1px solid #f5c6c6; color: #c00; }
+.xeplr-ax-result--skipped { background: #fff4d6; border: 1px solid #e6c17d; color: #8a5a00; }
+.xeplr-ax-result-hd { display: flex; justify-content: space-between; font-weight: 600; margin-bottom: 6px; }
+.xeplr-ax-result-dur { font-weight: 400; opacity: 0.7; }
+.xeplr-ax-result-body {
+  background: rgba(255,255,255,0.7); padding: 8px; border-radius: 4px;
+  font-family: ui-monospace, Consolas, monospace; font-size: 12px;
+  margin: 0; overflow: auto; color: #222;
+}
+.xeplr-ax-result-err-title { font-weight: 600; }
+.xeplr-ax-result-err-details { margin: 4px 0 0 20px; padding: 0; }

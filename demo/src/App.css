@@ -1,0 +1,9 @@
+body { margin: 0; font-family: system-ui, sans-serif; background: #f7f7f8; color: #222; }
+.app { max-width: 1200px; margin: 0 auto; padding: 24px; }
+.app header h1 { margin: 0 0 4px; font-size: 22px; }
+.app header p { color: #666; margin: 0 0 20px; font-size: 14px; line-height: 1.5; }
+.app header code { background: #f0f0f0; padding: 1px 6px; border-radius: 3px; font-size: 12px; }
+.cols { display: grid; grid-template-columns: 1fr 1.4fr; gap: 20px; align-items: start; }
+.col { background: #fff; border: 1px solid #e6e6e6; border-radius: 8px; padding: 16px; }
+.col h2 { font-size: 14px; margin: 0 0 12px; color: #444; font-weight: 600; }
+@media (max-width: 900px) { .cols { grid-template-columns: 1fr; } }
