@@ -1,15 +1,27 @@
 {
   "name": "@xeplr/ui-actions",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React components for @xeplr/actions — ActionExplorer + ActionRunner (builds on @xeplr/ui-schema-handler)",
   "type": "module",
   "main": "src/index.js",
-  "files": ["src/"],
-  "keywords": ["actions", "action-explorer", "runner", "react"],
+  "files": [
+    "src/"
+  ],
+  "keywords": [
+    "actions",
+    "action-explorer",
+    "runner",
+    "react"
+  ],
   "author": "xeplr",
   "license": "MIT",
-  "repository": { "type": "git", "url": "https://github.com/Xeplr/xeplr-ui-actions" },
-  "publishConfig": { "access": "public" },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Xeplr/xeplr-ui-actions"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
     "@xeplr/actions": "^1.0.0",
