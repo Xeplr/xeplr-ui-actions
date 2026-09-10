@@ -1,6 +1,6 @@
 {
   "name": "@xeplr/ui-actions",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "React components for @xeplr/actions — ActionExplorer + ActionRunner (builds on @xeplr/ui-schema-handler)",
   "type": "module",
   "main": "src/index.js",
