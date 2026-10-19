@@ -1,4 +1,5 @@
 import React from 'react';
+import { useActionExplorer } from './useActionExplorer.js';
 
 /**
  * List actions from the registry. Click one to expand its input/output schema.
@@ -7,8 +8,11 @@ import React from 'react';
  *   actions   — [{name, description, inputSchema, outputSchema}] (e.g. from actions.list())
  *   onSelect(name)   — optional callback when an action is clicked
  *   selected  — name of currently-selected action (for highlighting)
+ *   urlKey    — keep the open cards in the URL (`<urlKey>Open`), so a refresh
+ *               or a shared link opens them again; omitted → in memory
  */
-export function ActionExplorer({ actions = [], onSelect, selected }) {
+export function ActionExplorer({ actions = [], onSelect, selected, urlKey }) {
+  const cards = useActionExplorer({ urlKey });
   return (
     <div className="xeplr-ax-explorer">
       {actions.length === 0 && (
@@ -19,6 +23,8 @@ export function ActionExplorer({ actions = [], onSelect, selected }) {
           key={a.name}
           action={a}
           selected={selected === a.name}
+          open={cards.isOpen(a.name)}
+          onToggle={() => cards.toggle(a.name)}
           onClick={() => onSelect && onSelect(a.name)}
         />
       ))}
@@ -26,11 +32,10 @@ export function ActionExplorer({ actions = [], onSelect, selected }) {
   );
 }
 
-function ActionCard({ action, selected, onClick }) {
-  const [open, setOpen] = React.useState(false);
+function ActionCard({ action, selected, open, onToggle, onClick }) {
   return (
     <div className={`xeplr-ax-card${selected ? ' xeplr-ax-card--selected' : ''}`}>
-      <div className="xeplr-ax-card-hd" onClick={() => { setOpen(!open); onClick && onClick(); }}>
+      <div className="xeplr-ax-card-hd" onClick={() => { onToggle(); onClick && onClick(); }}>
         <span className="xeplr-ax-name">{action.name}</span>
         <span className="xeplr-ax-hint">{open ? '▾' : '▸'}</span>
       </div>
