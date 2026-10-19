@@ -7,10 +7,10 @@
 ## Install
 
 ```sh
-npm i @xeplr/ui-actions @xeplr/ui-schema-handler @xeplr/schema-handler @xeplr/actions
+npm i @xeplr/ui-actions @xeplr/ui-schema-handler @xeplr/schema-handler @xeplr/actions react-router-dom
 ```
 
-Peer dependencies: `react ^18 || ^19`, `@xeplr/actions ^1`, and `@xeplr/ui-schema-handler ^1` (which needs `@xeplr/schema-handler ^1`).
+Peer dependencies: `react ^18 || ^19`, `@xeplr/actions ^1`, `@xeplr/ui-schema-handler ^1` (which needs `@xeplr/schema-handler ^1`), and `react-router-dom ^6 || ^7` — imported by [`@xeplr/ui-utils`](https://www.npmjs.com/package/@xeplr/ui-utils)' `useUrlState` (a dependency, `^1.1.2`), which keeps the explorer's open cards in the URL. With no router above, they stay in memory.
 
 The package ships its source (`main: src/index.js`, JSX included), so your bundler must compile JSX from `node_modules`. Vite does this. The demo also lists the CommonJS `@xeplr/*` packages in Vite's `optimizeDeps.include` and `resolve.alias`, so their nested `require`s resolve.
 
@@ -61,10 +61,9 @@ export default function App() {
 
 | export | kind | props | what it does |
 |---|---|---|---|
-| `ActionExplorer` | component | `{ actions, onSelect, selected }` | One card per action. Clicking a card opens its Inputs/Outputs schema tables. |
+| `ActionExplorer` | component | `{ actions, onSelect, selected, urlKey }` | One card per action. Clicking a card opens its Inputs/Outputs schema tables. |
 | `ActionRunner` | component | `{ actions, onRun, initialAction }` | Action picker, an input form (`DynamicForm`), Run / Reset buttons, and a result panel |
-
-There are no hooks and no model module. The package has just these two components.
+| `useActionExplorer` | hook | `{ urlKey }` | Which cards are open: `{ open, isOpen(name), toggle(name) }` — for an explorer of your own design |
 
 ## `<ActionExplorer>`
 
@@ -73,10 +72,24 @@ There are no hooks and no model module. The package has just these two component
 | `actions` | `Array<{ name, description?, inputSchema?, outputSchema? }>` | `[]` | For example `actions.list()`. Cards are keyed by `name`. |
 | `onSelect` | `(name) => void` | — | Called when a card header is clicked |
 | `selected` | `string` | — | Name of the card to highlight (`xeplr-ax-card--selected`) |
+| `urlKey` | `string` | — | Keep the open cards in the URL, under `<urlKey>Open` — see below. Omit it and they stay in memory |
 
 - A card always shows its name and `description`. Clicking the header toggles it open and calls `onSelect` in the same click.
 - An open card shows an **Inputs** table and, only if the action has an `outputSchema`, an **Outputs** table. The columns are Name, Type (default `string`), Req (●), Default (JSON) and Description, sorted by `order`. An empty or missing input schema reads "Inputs: *none*".
 - With no actions it shows "No actions registered."
+
+### Open cards live in the URL: `urlKey`
+
+An open card is a place — the schema someone was reading — so with `urlKey` the names of the open cards are written to the URL's query, and a refresh or a shared link opens them again:
+
+```jsx
+<ActionExplorer actions={REGISTERED} urlKey="actions" />   // ?actionsOpen=add,send.email
+```
+
+- **The key is the host's, never a default.** A page may hold two explorers and the host app has keys of its own, so nothing is written without a `urlKey` — give each explorer its own. **Without one, the open cards stay in memory**, as before.
+- Several cards can be open: the value is their names, comma-separated, each URI-encoded. A name that is no longer registered simply opens nothing.
+- **Opening or closing a card adds a history entry**, so Back closes it again.
+- Needs a router above the explorer (`react-router-dom`). The value format is `src/explorerUrlState.js` (`explorerUrlKey`, `encodeOpen`, `decodeOpen`, `toggleOpen`); the hook is `src/useActionExplorer.js`.
 
 ## `<ActionRunner>`
 
@@ -140,8 +153,10 @@ npm run dev     # http://localhost:5274 — four sample actions: greet, add, slo
 
 ```
 src/
-  index.js            ─ exports ActionExplorer, ActionRunner
+  index.js            ─ exports ActionExplorer, ActionRunner, useActionExplorer
   ActionExplorer.jsx  ─ cards + input/output schema tables
+  useActionExplorer.js ─ which cards are open: in the URL under urlKey, or in memory
+  explorerUrlState.js ─ the open cards' URL value (React-free)
   ActionRunner.jsx    ─ picker, DynamicForm inputs, run, result panel
   styles.css          ─ optional default styles, xeplr-ax-*
 demo/                 ─ Vite app (not published)
@@ -149,7 +164,11 @@ demo/                 ─ Vite app (not published)
 
 ## Tests
 
-There is no test suite. `package.json` has no `test` script, so CI and the release workflow only log a "nothing verified" warning.
+```sh
+npm test        # node --test test/*.test.js
+```
+
+`test/explorerUrlState.test.js` covers the open cards' URL value, and `useActionExplorer` reading it back from a real `MemoryRouter` and being toggled in memory, rendered with `react-dom/server`. The components themselves have no tests.
 
 ## License
 
